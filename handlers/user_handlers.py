@@ -4,6 +4,7 @@ from aiogram.types import Message
 from keyboards.keyboards import game_kb, yes_no_kb
 from lexicon.lexicon_ru import LEXICON_RU
 from services.services import get_bot_choice, get_winner
+from aiogram import Bot
 
 router = Router()
 
@@ -42,3 +43,8 @@ async def process_game_button(message: Message):
                               f'- {LEXICON_RU[bot_choice]}')
     winner = get_winner(message.text, bot_choice)
     await message.answer(text=LEXICON_RU[winner], reply_markup=yes_no_kb)
+
+@router.message(Command(commands='delmenu'))
+async def del_main_menu(message: Message, bot: Bot):
+    await bot.delete_my_commands()
+    await message.answer(text='Кнопка "Menu" удалена')
